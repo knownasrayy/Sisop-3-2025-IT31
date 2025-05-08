@@ -4,6 +4,13 @@
 - Rayhan Agnan Kusuma_5027241102
 - S. Farhan Baig_5027241097
 
+## Soal_2 
+### Deskripsi_Singkat
+Sistem RushGo terdiri dari dua program berbasis shared memory untuk mengelola dan memroses pesanan:
+1. Delivery_agent.c
+- Membaca file delivery_order.csv (skip header bila ada)
+- Membuat/shared memory (/rushgo_shm) dan menyimpan semua order
+
 ## Soal_4 – Sung Jin Woo's Hunter System
 ### Deskripsi Singkat
 Dalam dunia alternatif di mana Sung Jin Woo bereinkarnasi menjadi seorang admin, ia membangun sebuah sistem pelatihan untuk para hunter. Sistem ini menggunakan shared memory untuk mengelola data hunter, dungeon, dan pertarungan secara real-time. Proyek ini terdiri dari 2 program utama:
