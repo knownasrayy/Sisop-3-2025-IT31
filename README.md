@@ -8,63 +8,57 @@
 
 ## Deskripsi Soal
 
-Pada soal ini saya diminta menyusun struktur folder dan file sesuai contoh dari situs deep web. Petunjuk yang diberikan berupa file teks yang harus diubah menjadi file jpeg menggunakan sistem RPC, namun di nomor 1a ini hanya fokus pada penyusunan struktur direktori dan file yang sesuai.
-
----
+Pada soal ini diminta untuk menyusun struktur folder dan file sesuai contoh dari situs deep web. Petunjuk yang diberikan merupakan file teks yang harus diubah menjadi file jpeg menggunakan sistem RPC.
 
 ##  Tujuan Soal Nomor 1a
 
-- Download & ekstrak file text dan jpeg dari situs deep web (boleh manual).
-- Menyusun struktur direktori seperti contoh.
-- Tidak perlu membuat atau menjalankan server/client dulu (itu soal selanjutnya).
-
----
+- Download & extract file text dan jpeg dari situs deep web.
+- Menyusun struktur direktori seperti yang dicantumkan di soal.
 
 ## Proses Pengerjaan
 
-Berikut ini adalah langkah-langkah yang saya lakukan untuk menyusun struktur direktori sesuai soal:
+Berikut ini adalah langkah-langkah untuk menyusun struktur direktori sesuai soal:
 
 ### 1. Masuk ke folder kerja
-Saya masuk dulu ke direktori tempat saya ingin menyusun proyek, contohnya:
+Masuk ke direktori tempat saya ingin menyusun proyek:
 ```bash 
 cd ~/Downloads/temp_secrets
 ```
+
 ### 2. Membuat folder sesuai struktur
-Saya membuat semua folder yang dibutuhkan menggunakan mkdir:
+Membuat semua folder yang dibutuhkan menggunakan mkdir:
 ```bash 
 mkdir -p client/secrets
 mkdir -p server/database
 ```
+
 ### 3. Menyalin/memindahkan file ke folder yang benar
-Setelah file teks dan gambar saya ekstrak atau download secara manual, saya pindahkan ke lokasi yang benar:
+Setelah file teks dan gambar saya ekstrak atau download secara manual, bisa kita pindahkan ke lokasi yang benar:
 Pindahkan input teks ke client/secrets:
 ```bash 
 mv input_1.txt input_2.txt input_3.txt input_4.txt input_5.txt client/secrets/
 ```
+
 Pindahkan file JPEG ke client/:
 ```bash
 mv 1744403652.jpeg 1744403687.jpeg client/
 ```
+
 Duplikat file JPEG ke server/database:
 ```bash
 cp client/1744403652.jpeg client/1744403687.jpeg server/database/
 ```
-### 4. Memastikan file .c ada di root direktori
-Jika sebelumnya nama file salah (contoh image_clnt.c), saya ubah:
-```bash
-mv image_clnt.c image_client.c
-```
 
-### 5. Menambahkan placeholder file (jika perlu)
-Jika saya belum compile file .c, saya bisa buat placeholder dulu:
+### 4. Menambahkan placeholder file
+Jika belum compile file .c, kita bisa membuat placeholder dulu:
 ```bash
 touch client/image_client
 touch server/image_server
 touch server/server.log
 ```
 
-### 6. Mengecek struktur dengan tree
-Terakhir, saya jalankan:
+### 5. Mengecek struktur dengan tree
+Dan untuk yang terakhir:
 ```bash
 tree
 ```
@@ -109,8 +103,9 @@ Dan hasilnya sesuai dengan yang diinginkan:
 
 ## File utama di root
 `image_client.c`: Source code program client RPC.
-
 `image_server.c`: Source code program server RPC.
+
+---
 
 ## Soal_2 
 ### Deskripsi_Singkat
