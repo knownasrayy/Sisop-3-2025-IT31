@@ -4,9 +4,9 @@
 - Rayhan Agnan Kusuma_5027241102
 - S. Farhan Baig_5027241097
 
-# The Legend of Rootkids – Nomor 1a
+## Soal_1
 
-## 🧠 Deskripsi Soal
+## Deskripsi Soal
 
 > **Tahun 2045**, dunia mengalami kehancuran infrastruktur siber. Sebagai mahasiswa Departemen Teknologi Informasi ITS, saya memiliki ide untuk kembali ke tahun 2025 untuk mencari hacker legendaris asal Semarang, yaitu **“rootkids”**.  
 >
@@ -16,15 +16,15 @@
 
 ---
 
-## ✅ Tujuan Soal Nomor 1a
+##  Tujuan Soal Nomor 1a
 
-- ✅ Download & ekstrak file text dan jpeg dari situs deep web (boleh manual).
-- ✅ Menyusun struktur direktori seperti contoh.
-- ❌ Tidak perlu membuat atau menjalankan server/client dulu (itu soal selanjutnya).
+- Download & ekstrak file text dan jpeg dari situs deep web (boleh manual).
+- Menyusun struktur direktori seperti contoh.
+- Tidak perlu membuat atau menjalankan server/client dulu (itu soal selanjutnya).
 
 ---
 
-## 🛠️ Proses Pengerjaan
+## Proses Pengerjaan
 
 Berikut ini adalah langkah-langkah yang saya lakukan untuk menyusun struktur direktori sesuai soal:
 
