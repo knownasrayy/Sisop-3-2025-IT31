@@ -119,3 +119,196 @@ void list_dungeons(struct SystemData *sysdata, struct Hunter *h) {
     }
 
 ```
+
+#### d. Raid Dungeon + Reward Stat
+#### Soal :
+- Hunter bisa raid dungeon.
+
+- Setelah menang:
+
+  - Hunter dapat stat reward.
+  - Dungeon dihapus dari list.
+  - EXP +500 berarti naik level.
+#### Implementasi Code :
+```bash
+    logged->atk += chosen.atk;
+    logged->hp += chosen.hp;
+    logged->def += chosen.def;
+    logged->exp += chosen.exp;
+
+    printf("\nRaid success! Gained:\n");
+    printf("ATK: %d\n", chosen.atk);
+    printf("HP: %d\n", chosen.hp);
+    printf("DEF: %d\n", chosen.def);
+    printf("EXP: %d\n", chosen.exp);
+
+    if (logged->exp >= 500) {
+        logged->level += 1;
+        logged->exp = 0;
+        printf("\nCongratulations! You leveled up to Level %d!\n", logged->level);
+    }
+
+    for (int i = options[pick - 1]; i < sysdata->num_dungeons - 1; i++) {
+        sysdata->dungeons[i] = sysdata->dungeons[i + 1];
+    }
+    sysdata->num_dungeons--;
+
+    printf("\nPress enter to continue...");
+    getchar();
+}
+
+```
+
+#### e. Hunter Battle (1 vs 1)
+#### Soal :
+- Hunter bisa battle dengan hunter lain.
+- Pemenang: dapat semua stats musuh.
+- Yang kalah: dihapus dari list hunter.
+#### Implementasi Code :
+```bash
+   int logged_power = logged->atk + logged->hp + logged->def;
+    int opponent_power = opponent->atk + opponent->hp + opponent->def;
+
+    printf("\nYour Power: %d | Opponent Power: %d\n", logged_power, opponent_power);
+
+    if (logged_power >= opponent_power) {
+        logged->atk += opponent->atk;
+        logged->hp += opponent->hp;
+        logged->def += opponent->def;
+
+        printf("You won the battle! Gained all stats from %s.\n", opponent->username);
+
+        for (int i = indices[pick - 1]; i < sysdata->num_hunters - 1; i++) {
+            sysdata->hunters[i] = sysdata->hunters[i + 1];
+        }
+        sysdata->num_hunters--;
+
+    } else {
+        opponent->atk += logged->atk;
+        opponent->hp += logged->hp;
+        opponent->def += logged->def;
+
+        printf("You lost the battle! You have been eliminated.\n");
+
+        for (int i = 0; i < sysdata->num_hunters; i++) {
+            if (strcmp(sysdata->hunters[i].username, logged->username) == 0) {
+                for (int j = i; j < sysdata->num_hunters - 1; j++) {
+                    sysdata->hunters[j] = sysdata->hunters[j + 1];
+                }
+                sysdata->num_hunters--;
+                break;
+            }
+        }
+```
+
+#### f. Fitur Ban & Unban Hunter
+#### Soal :
+- Admin bisa ban hunter dan hunter tersebut tidak bisa raid/battle.
+- Admin juga bisa unban.
+#### Implementasi Code :
+```bash
+
+void ban_hunter(struct SystemData *sysdata) {
+    char name[50];
+    printf("Enter hunter name to ban: ");
+    scanf("%49s", name);
+    for (int i = 0; i < sysdata->num_hunters; i++) {
+        if (strcmp(sysdata->hunters[i].username, name) == 0) {
+            sysdata->hunters[i].banned = 1;
+            printf("Hunter %s has been banned.\n", name);
+            return;
+        }
+    }
+    printf("Hunter not found.\n");
+}
+
+void unban_hunter(struct SystemData *sysdata) {
+    char name[50];
+    printf("Enter hunter name to unban: ");
+    scanf("%49s", name);
+    for (int i = 0; i < sysdata->num_hunters; i++) {
+        if (strcmp(sysdata->hunters[i].username, name) == 0) {
+            sysdata->hunters[i].banned = 0;
+            printf("Hunter %s has been unbanned.\n", name);
+            return;
+        }
+    }
+    printf("Hunter not found.\n");
+}
+```
+
+
+#### g. Fitur Reset Stats Hunter
+#### Soal :
+Admin bisa reset hunter:
+
+- Level = 1
+- EXP = 0
+- ATK = 10
+- HP = 100
+- DEF = 5
+#### Implementasi Code :
+```bash
+void reset_hunter(struct SystemData *sysdata) {
+    char name[50];
+    printf("Enter hunter name to reset: ");
+    scanf("%49s", name);
+    for (int i = 0; i < sysdata->num_hunters; i++) {
+        if (strcmp(sysdata->hunters[i].username, name) == 0) {
+            sysdata->hunters[i].level = 1;
+            sysdata->hunters[i].exp = 0;
+            sysdata->hunters[i].atk = 10;
+            sysdata->hunters[i].hp = 100;
+            sysdata->hunters[i].def = 5;
+            printf("Hunter %s has been reset.\n", name);
+            return;
+        }
+    }
+    printf("Hunter not found.\n");
+}
+
+```
+
+#### H. Notifikasi Dungeon (Dynamic)
+#### Soal :
+Ada notifikasi dungeon yang update tiap 3 detik:
+Info: jumlah hunter, jumlah dungeon, top hunter.
+
+#### Implementasi Code :
+```bash
+void show_notification(struct SystemData *sysdata, struct Hunter *logged) {
+    printf("\n== NOTIFICATIONS ==\n");
+
+    printf("Total Hunters: %d\n", sysdata->num_hunters);
+    printf("Available Dungeons: %d\n", sysdata->num_dungeons);
+
+    int max_level = logged->level;
+    char top_hunter[50];
+    strcpy(top_hunter, logged->username);
+
+    for (int i = 0; i < sysdata->num_hunters; i++) {
+        if (sysdata->hunters[i].level > max_level) {
+            max_level = sysdata->hunters[i].level;
+            strcpy(top_hunter, sysdata->hunters[i].username);
+        }
+    }
+
+    printf("Top Hunter: %s (Level %d)\n", top_hunter, max_level);
+
+    printf("\nPress enter to continue...");
+    getchar(); getchar();
+}
+
+```
+
+#### 8. Shared Memory Antar Hunter & Sistem
+#### Soal :
+- Semua hunter pakai shared memory.
+- Semua memory harus terhapus saat sistem mati.
+
+#### Implementasi Code :
+```bash
+key_t key = get_system_key();
+int shmid = shmget(key, sizeof(struct SystemData), 0666);
+struct SystemData *sysdata = shmat(shmid, NULL, 0);
+```
