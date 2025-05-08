@@ -4,6 +4,33 @@
 - Rayhan Agnan Kusuma_5027241102
 - S. Farhan Baig_5027241097
 
+# The Legend of Rootkids – Nomor 1a
+
+## 🧠 Deskripsi Soal
+
+> **Tahun 2045**, dunia sedang mengalami krisis dalam infrastruktur siber. Sebagai mahasiswa Departemen Teknologi Informasi ITS, saya memiliki ide untuk kembali ke masa lalu (tahun 2025) untuk mencari seorang hacker legendaris asal Semarang bernama **“rootkids”**.  
+>
+> Satu-satunya petunjuk adalah dari situs deep web yang berisi beberapa file teks aneh dan instruksi untuk membuat sistem **RPC client-server** guna mengubah file teks menjadi gambar **JPEG**.  
+>
+> Tugas saya pada **nomor 1a** adalah menyiapkan folder dan file sesuai dengan struktur direktori contoh dari deep web tersebut.
+
+---
+
+## ✅ Tujuan Nomor 1a
+
+- ✅ Men-download & mengekstrak file dari deep web (boleh manual).
+- ✅ Menyusun struktur direktori proyek sesuai contoh.
+- ❌ Belum membuat atau menjalankan server/client RPC (itu bagian soal selanjutnya).
+
+---
+
+## 🗂️ Struktur Folder Final
+
+Berikut adalah struktur direktori setelah saya menyelesaikan tahap 1a:
+
+
+
+
 ## Soal_2 
 ### Deskripsi_Singkat
 Sistem RushGo terdiri dari dua program berbasis shared memory untuk mengelola dan memroses pesanan:
