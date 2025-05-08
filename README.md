@@ -205,6 +205,295 @@ for (i=0; i<*num_orders; i++) {
 
 ```
 
+## Soal_3 - The Lost Dungeon
+### Deskripsi Singkat
+Sistem “The Lost Dungeon” adalah aplikasi client-server berbasis TCP yang menghadirkan pengalaman RPG sederhana.
+- `Dungeon.c `bertindak sebagai server multithreaded pada port 12345, menerima koneksi dari banyak client secara bersamaan, menampilkan menu utama, dan mengelola alur permainan (status, toko, inventori, pertarungan).
+- `Player.c `adalah client yang terhubung ke server, menggunakan select() untuk menangani input user dan output server secara asinkron.
+- `Shop.c / shop.h ` menyimpan daftar senjata dan menyediakan fungsi cetak toko, validasi, serta pengambilan data senjata.
+
+### Penjelasan Kode
+
+A. Entering The Dungeon
+```bash
+int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+bind(server_fd, …, htons(PORT));      
+listen(server_fd, MAX_CLIENTS);     
+
+```
+- Menyiapkan server TCP
+
+B. Sightseeing
+```bash
+void* client_handler(void *arg) {
+    Client *c = arg;
+    Player p = { .gold = 500, .equipped = &weapons[0], .inv_count = 1, .kills = 0 };
+    p.inventory[0] = &weapons[0];
+
+    srand(time(NULL) ^ c->sock);
+    send_msg(c->sock, "Connected to the dungeon server!\n");
+
+    while (1) {
+        print_menu(c->sock);
+        char line[BUF_SIZE];
+        if (recv_line(c->sock, line, sizeof(line)) <= 0) break;
+        int opt = atoi(line);
+        switch (opt) {
+            case 1: handle_show_stats(c->sock, &p);    break;
+            case 2: handle_shop(c->sock,       &p);    break;
+            case 3: handle_inventory(c->sock, &p);    break;
+            case 4: handle_battle(c->sock,    &p);    break;
+            case 5:
+                send_msg(c->sock, "Goodbye!\n");
+                close(c->sock);
+                free(c);
+                return NULL;
+            default:
+                send_msg(c->sock, "Invalid option. Please try again.\n");
+        }
+    }
+    close(c->sock);
+    free(c);
+    return NULL;
+}
+```
+dan 
+```bash
+void print_menu(int sock) {
+  send_msg(sock,
+    "\n===== MAIN MENU =====\n"
+    "1. Show Player Stats\n"
+    "2. Shop (Buy Weapons)\n"
+    "3. View Inventory & Equip Weapons\n"
+    "4. Battle Mode\n"
+    "5. Exit Game\n"
+    "Choose an option: ");
+}
+
+```
+- Berfungsi menampilkan opsi-opsi
+
+
+C. Status Check
+```bash
+void handle_show_stats(int sock, Player *p) {
+    char tmp[BUF_SIZE];
+    snprintf(tmp, sizeof(tmp),
+        "\n=== PLAYER STATS ===\n"
+        "Gold: %d | Equipped Weapon: %s | Base Damage: %d | Kills: %d",
+        p->gold, p->equipped->name, p->equipped->damage, p->kills
+    );
+    send_msg(sock, tmp);
+    if (p->equipped->passiveType == PASSIVE_CRIT) {
+        snprintf(tmp, sizeof(tmp),
+            " | Passive: Increased Crit Chance (%d%%)\n",
+            p->equipped->passiveChance
+        );
+        send_msg(sock, tmp);
+    } else if (p->equipped->passiveType == PASSIVE_INSTA) {
+        snprintf(tmp, sizeof(tmp),
+            " | Passive: %d%% Instant Kill Chance\n",
+            p->equipped->passiveChance
+        );
+        send_msg(sock, tmp);
+    } else {
+        send_msg(sock, "\n");
+    }
+}
+```
+- Mencetak gold, nama & damage senjata, kill count, plus deskripsi passive jika berlaku.
+
+D. Weapon Shop
+1. Shop.c
+   ```bash
+   for (i=0; i<NUM_WEAPONS; i++){ snprintf(buf, …, "[%d] %s - Price: %d, Damage: %d",
+    weapons[i].id, weapons[i].name, weapons[i].price, weapons[i].damage);send_msg(sock, buf);}
+   send_msg(sock, "Enter weapon number to buy (0 to cancel): "); ```
+2. dungeon.c
+   ```bash
+   void handle_shop(int sock, Player *p) {
+    char buf[BUF_SIZE], in[BUF_SIZE];
+    print_shop(sock);
+    if (recv_line(sock, in, sizeof(in)) <= 0) return;
+    int wid = atoi(in);
+    if (wid == 0) {
+        send_msg(sock, "Cancelled.\n");
+        return;
+    }
+    if (!is_valid_weapon(wid)) {
+        send_msg(sock, "Invalid option. Please try again.\n");
+        return;
+    }
+    Weapon *w = get_weapon(wid);
+    if (p->gold < w->price) {
+        send_msg(sock, "Not enough gold.\n");
+        return;
+    }
+    p->gold -= w->price;
+    if (p->inv_count < 20) {
+        p->inventory[p->inv_count++] = w;
+        snprintf(buf, sizeof(buf), "Purchased %s!\n", w->name);
+        send_msg(sock, buf);
+    } else {
+        send_msg(sock, "Inventory full.\n");
+    }}
+   ```
+   - Validasi ID, cek gold, tambahkan ke inventory (max 20 slot).
+
+E. Handy Inventory
+```bash
+void handle_inventory(int sock, Player *p) {
+    char buf[BUF_SIZE], in[BUF_SIZE];
+    send_msg(sock, "\n=== YOUR INVENTORY ===\n");
+    for (int i = 0; i < p->inv_count; i++) {
+        snprintf(buf, sizeof(buf), "[%d] %s", i, p->inventory[i]->name);
+        send_msg(sock, buf);
+        if (p->inventory[i]->passiveType == PASSIVE_CRIT) {
+            snprintf(buf, sizeof(buf),
+                " (Passive: %d%% Crit Chance)",
+                p->inventory[i]->passiveChance
+            );
+            send_msg(sock, buf);
+        } else if (p->inventory[i]->passiveType == PASSIVE_INSTA) {
+            snprintf(buf, sizeof(buf),
+                " (Passive: %d%% Instant Kill Chance)",
+                p->inventory[i]->passiveChance
+            );
+            send_msg(sock, buf);
+        }
+        if (p->inventory[i] == p->equipped) send_msg(sock, " (EQUIPPED)");
+        send_msg(sock, "\n");
+    }
+    send_msg(sock, "Enter weapon number to equip (or -1 to cancel): ");
+    if (recv_line(sock, in, sizeof(in)) <= 0) return;
+    int idx = atoi(in);
+    if (idx < 0 || idx >= p->inv_count) {
+        send_msg(sock, "Invalid option. Please try again.\n");
+        return;
+    }
+    p->equipped = p->inventory[idx];
+    send_msg(sock, "Weapon equipped!\n");
+}
+```
+- Daftar semua senjata, tampilkan passive, pilih index untuk equip.
+
+F. Enemy Encounter
+```bash
+void handle_battle(int sock, Player *p) {
+    char buf[BUF_SIZE], in[BUF_SIZE];
+    int enemy_hp = rand() % 151 + 50;
+    int max_hp   = enemy_hp;
+    const int barWidth = 20;
+
+    send_msg(sock, "\n=== BATTLE STARTED ===\n");
+    while (1) {
+        // build health bar
+        int filled = (int)((float)enemy_hp / max_hp * barWidth);
+        if (filled < 0) filled = 0;
+        char bar[barWidth+1];
+        for (int i = 0; i < barWidth; i++)
+            bar[i] = (i < filled ? '#' : ' ');
+        bar[barWidth] = '\0';
+
+        snprintf(buf, sizeof(buf),
+            "Enemy health: [%s] %d/%d HP\n"
+            "Type 'attack' to attack or 'exit' to leave battle.\n> ",
+            bar, enemy_hp, max_hp
+        );
+        send_msg(sock, buf);
+
+        if (recv_line(sock, in, sizeof(in)) <= 0) return;
+        if (strcmp(in, "exit") == 0) {
+            send_msg(sock, "Exiting battle...\n");
+            return;
+        } else if (strcmp(in, "attack") != 0) {
+            send_msg(sock, "Invalid option. Please try again.\n");
+            continue;
+        }
+
+        int damage = p->equipped->damage + rand() % (p->equipped->damage + 1);
+
+        if (p->equipped->passiveType == PASSIVE_INSTA &&
+            rand() % 100 < p->equipped->passiveChance) {
+            snprintf(buf, sizeof(buf),
+                "\n=== INSTANT KILL! ===\n"
+                "Your %s unleashed a beam of pure energy!\n"
+                "Enemy was instantly destroyed!\n",
+                p->equipped->name
+            );
+            send_msg(sock, buf);
+            enemy_hp = 0;
+        } else {
+            int critChance = (p->equipped->passiveType == PASSIVE_CRIT)
+                             ? p->equipped->passiveChance
+                             : 10;
+            if (rand() % 100 < critChance) {
+                damage *= 2;
+                snprintf(buf, sizeof(buf),
+                    "\n=== CRITICAL HIT! ===\nYou dealt %d damage!\n",
+                    damage
+                );
+                send_msg(sock, buf);
+            } else {
+                snprintf(buf, sizeof(buf),
+                    "\nYou dealt %d damage!\n", damage
+                );
+                send_msg(sock, buf);
+            }
+            enemy_hp -= damage;
+        }
+
+        if (enemy_hp <= 0) {
+            p->kills++;
+            int reward = rand() % 151 + 50;
+            p->gold += reward;
+            snprintf(buf, sizeof(buf),
+                "\nYou earned %d gold!\n"
+                "=== NEW ENEMY ===\n",
+                reward
+            );
+            send_msg(sock, buf);
+            enemy_hp = rand() % 151 + 50;
+            max_hp   = enemy_hp;
+        }
+    }
+}
+
+```
+- Loop menampilkan health bar, terima “attack” atau “exit”.
+
+G. Other Battle Logic
+```bash
+int damage = p->equipped->damage + rand() % (p->equipped->damage + 1);
+
+if (p->equipped->passiveType == PASSIVE_INSTA && rand()%100 < p->equipped->passiveChance) {
+  /* langsung enemy_hp = 0 */
+}
+
+else {
+  int critChance = (p->equipped->passiveType == PASSIVE_CRIT)
+                   ? p->equipped->passiveChance : 10;
+  if (rand()%100 < critChance) damage *= 2;
+  enemy_hp -= damage;
+}
+
+
+```
+- Logika damage acak, crit double damage, instant kill, dan reward gold acak.
+
+H. Error Handling 
+- Menu utama >> (default case) menampilkan "Invalid option. Please try again.\n"
+
+- Shop >> wid==0 menampilkan "Cancelled."; invalid ID menampilkan "Invalid option."; gold kurang menampilkan "Not enough gold."; inventori penuh menampilkan"Inventory full."
+
+- Inventory >> index out-of-range menampilkan "Invalid option."
+
+- Battle >> selain “attack”/“exit” menampilkan "Invalid option."
+
+
+
+
 ## Soal_4 – Sung Jin Woo's Hunter System
 ### Deskripsi Singkat
 Dalam dunia alternatif di mana Sung Jin Woo bereinkarnasi menjadi seorang admin, ia membangun sebuah sistem pelatihan untuk para hunter. Sistem ini menggunakan shared memory untuk mengelola data hunter, dungeon, dan pertarungan secara real-time. Proyek ini terdiri dari 2 program utama:
