@@ -88,22 +88,23 @@ Dan hasilnya sesuai dengan yang diinginkan:
 
 ## Penjelasan Struktur Folder
 ### client/
-`image_client`: Executable hasil kompilasi client, akan digunakan untuk mengirim permintaan ke server.
+- `image_client`: Executable hasil kompilasi client, akan digunakan untuk mengirim permintaan ke server.
 
-`secrets/`: Berisi file teks rahasia (input_1.txt sampai input_5.txt).
+- `secrets/`: Berisi file teks rahasia (input_1.txt sampai input_5.txt).
 
-`1744403652.jpeg`, `1744403687.jpeg`: File JPEG hasil konversi yang disimpan oleh client.
+- `1744403652.jpeg`, `1744403687.jpeg`: File JPEG hasil konversi yang disimpan oleh client.
 
 ### server/
-`database/`: Tempat menyimpan referensi hasil konversi JPEG dari client.
+- `database/`: Tempat menyimpan referensi hasil konversi JPEG dari client.
 
-`image_server`: Executable hasil kompilasi server.
+- `image_server`: Executable hasil kompilasi server.
 
-`server.log`: Untuk mencatat log permintaan dari client.
+- `server.log`: Untuk mencatat log permintaan dari client.
 
 ## File utama di root
-`image_client.c`: Source code program client RPC.
-`image_server.c`: Source code program server RPC.
+- `image_client.c`: Source code program client RPC.
+
+- `image_server.c`: Source code program server RPC.
 
 ---
 
