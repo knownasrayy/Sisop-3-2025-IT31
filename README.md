@@ -8,81 +8,30 @@
 
 ## 🧠 Deskripsi Soal
 
-> **Tahun 2045**, dunia sedang mengalami krisis dalam infrastruktur siber. Sebagai mahasiswa Departemen Teknologi Informasi ITS, saya memiliki ide untuk kembali ke masa lalu (tahun 2025) untuk mencari seorang hacker legendaris asal Semarang bernama **“rootkids”**.  
+> **Tahun 2045**, dunia mengalami kehancuran infrastruktur siber. Sebagai mahasiswa Departemen Teknologi Informasi ITS, saya memiliki ide untuk kembali ke tahun 2025 untuk mencari hacker legendaris asal Semarang, yaitu **“rootkids”**.  
 >
-> Satu-satunya petunjuk adalah dari situs deep web yang berisi beberapa file teks aneh dan instruksi untuk membuat sistem **RPC client-server** guna mengubah file teks menjadi gambar **JPEG**.  
+> Petunjuk hanya ditemukan dari situs deep web berupa beberapa file teks aneh yang harus diubah menjadi file **JPEG** menggunakan sistem **RPC Client-Server**.  
 >
-> Tugas saya pada **nomor 1a** adalah menyiapkan folder dan file sesuai dengan struktur direktori contoh dari deep web tersebut.
+> Di nomor **1a**, saya diminta **menyusun struktur folder dan file** berdasarkan contoh yang ditampilkan di situs deep web.
 
 ---
 
-## ✅ Tujuan Nomor 1a
+## ✅ Tujuan Soal Nomor 1a
 
-- ✅ Men-download & mengekstrak file dari deep web (boleh manual).
-- ✅ Menyusun struktur direktori proyek sesuai contoh.
-- ❌ Belum membuat atau menjalankan server/client RPC (itu bagian soal selanjutnya).
-
----
-
-## 🗂️ Struktur Folder Final
-
-Berikut adalah struktur direktori setelah saya menyelesaikan tahap 1a:
-.
-├── client
-│ ├── 1744403652.jpeg
-│ ├── 1744403687.jpeg
-│ ├── image_client
-│ └── secrets
-│ ├── input_1.txt
-│ ├── input_2.txt
-│ ├── input_3.txt
-│ ├── input_4.txt
-│ └── input_5.txt
-├── image_client.c
-├── image_server.c
-└── server
-├── database
-│ ├── 1744403652.jpeg
-│ └── 1744403687.jpeg
-├── image_server
-└── server.log
-
+- ✅ Download & ekstrak file text dan jpeg dari situs deep web (boleh manual).
+- ✅ Menyusun struktur direktori seperti contoh.
+- ❌ Tidak perlu membuat atau menjalankan server/client dulu (itu soal selanjutnya).
 
 ---
 
-## 🔧 Penjelasan Tiap Komponen
+## 🛠️ Proses Pengerjaan
 
-### 📁 `client/`
-- `1744403652.jpeg`, `1744403687.jpeg`: Hasil output dari proses konversi text-to-jpeg.
-- `image_client`: File executable yang nantinya akan dijalankan oleh client untuk memanggil fungsi RPC ke server.
-- `secrets/`: Folder berisi lima file teks (`input_1.txt` hingga `input_5.txt`) yang berisi data rahasia untuk dikonversi.
+Berikut ini adalah langkah-langkah yang saya lakukan untuk menyusun struktur direktori sesuai soal:
 
-### 📄 `image_client.c`
-- Merupakan source code program client RPC. Belum dikompilasi atau dijelaskan di tahap ini.
-
-### 📄 `image_server.c`
-- Merupakan source code program server RPC. Sama seperti client, belum perlu dijalankan atau dijelaskan di soal nomor 1a.
-
-### 📁 `server/`
-- `image_server`: File hasil kompilasi dari `image_server.c`, yaitu server RPC yang nantinya akan menerima permintaan dari client.
-- `server.log`: Log file untuk mencatat aktivitas server.
-- `database/`: Folder yang menyimpan data JPEG untuk proses validasi atau pembandingan saat server menerima input dari client.
-
----
-
-## 🧾 Catatan Pengerjaan
-
-- File teks (`input_1.txt`–`input_5.txt`) dan file gambar (`*.jpeg`) diperoleh dari link di soal dan dipindahkan manual ke lokasi masing-masing.
-- Semua nama file, ekstensi, dan penempatan folder **disamakan persis seperti contoh di soal** untuk menghindari error di tahap-tahap berikutnya.
-- Penamaan file `image_clnt.c` telah diperbaiki menjadi `image_client.c` agar konsisten dan mudah dipahami.
-
----
-
-## 🏁 Status
-
-✅ Nomor 1a telah SELESAI.  
-▶️ Siap lanjut ke tahap pemrograman RPC di nomor berikutnya.
-
+### 1. Masuk ke folder kerja
+Saya masuk dulu ke direktori tempat saya ingin menyusun proyek, contohnya:
+```bash
+cd ~/Downloads/temp_secrets
 
 
 ## Soal_2 
