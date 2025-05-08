@@ -65,12 +65,36 @@ for (int i = 0; i < 3; i++) {
 - Tandai delivered = 1, isi agent = "AGENT A/B/C" secara bergilir
 - Lepas mutex
 - Panggil log_delivery(agent, &orders[i])
-Tulis kedalam log
 ```bash
 fprintf(f, "[%d/%m/%Y %H:%M:%S] [%s] Express package delivered to %s in %s\n",
         buf, agent, o->name, o->address);
 
 ```
+- Tulis kedalam log
+  
+C. Pengiriman Bertipe Reguler
+```bash
+int fd = shm_open(SHM_NAME, O_RDWR, 0);
+mmap(...);
+
+```
+- Membuka shared memory
+```bash
+if (orders[i].type=='R' && strcmp(orders[i].name,target)==0 && delivered==0) {
+  orders[i].delivered = 1;
+  strcpy(orders[i].agent, agent_str); 
+  log_delivery(agent_str, &orders[i]);
+  printf("Delivered Reguler package to %s by %s\n", target, agent_str);
+}
+
+```
+- Mencari dan proses
+```bash
+fprintf(f, "[%d/%m/%Y %H:%M:%S] [%s] Reguler package delivered to %s in %s\n",
+        buf, agent, o->name, o->address);
+
+```
+- Tulis kedalam log
 
 ## Soal_4 – Sung Jin Woo's Hunter System
 ### Deskripsi Singkat
