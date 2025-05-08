@@ -16,7 +16,7 @@ Dalam dunia alternatif di mana Sung Jin Woo bereinkarnasi menjadi seorang admin,
 -  shm_common.h : Berisi definisi struktur dan key shared memory
 
 ### Penjelasan Code ```hunter.c``` dan ```system.c```  berdasarkan kategori soal
-#### a. Implementasi Sistem Hunter dan Client menggunakan Shared Memory IPC
+#### 1. Implementasi Sistem Hunter dan Client menggunakan Shared Memory IPC
 #### Soal : system.c berperan sebagai server yang membuat dan mengelola shared memory utama, sedangkan ```hunter.c``` bertindak sebagai client yang mengakses dan memodifikasi data hunter di shared memory tersebut, dengan syarat hanya dapat dijalankan setelah ```system.c``` aktif.
 #### Implementasi :
 #### Di system.c:
@@ -28,7 +28,7 @@ Di hunter.c:
 -  Bisa battle dengan hunter lain yaitu hunters_battle
 -  Data hunter dan dungeon diakses bareng-bareng via shared memory sysdata
 
-#### b. Registrasi dan Login Hunter
+#### 2. Registrasi dan Login Hunter
 #### Soal :
 - Hunter bisa register & login.
 - Saat register, hunter punya:
@@ -100,7 +100,7 @@ Di hunter.c:
 
 ```
 
-#### c. List Dungeon Sesuai Level Hunter
+#### 3. List Dungeon Sesuai Level Hunter
 #### Soal : Hunter hanya bisa melihat dungeon yang levelnya sesuai (minimal level terpenuhi).
 #### Implementasi Code :
 ```bash
@@ -120,7 +120,7 @@ void list_dungeons(struct SystemData *sysdata, struct Hunter *h) {
 
 ```
 
-#### d. Raid Dungeon + Reward Stat
+#### 4. Raid Dungeon + Reward Stat
 #### Soal :
 - Hunter bisa raid dungeon.
 
@@ -159,7 +159,7 @@ void list_dungeons(struct SystemData *sysdata, struct Hunter *h) {
 
 ```
 
-#### e. Hunter Battle (1 vs 1)
+#### 5. Hunter Battle (1 vs 1)
 #### Soal :
 - Hunter bisa battle dengan hunter lain.
 - Pemenang: dapat semua stats musuh.
@@ -201,7 +201,7 @@ void list_dungeons(struct SystemData *sysdata, struct Hunter *h) {
         }
 ```
 
-#### f. Fitur Ban & Unban Hunter
+#### 6. Fitur Ban & Unban Hunter
 #### Soal :
 - Admin bisa ban hunter dan hunter tersebut tidak bisa raid/battle.
 - Admin juga bisa unban.
@@ -238,7 +238,7 @@ void unban_hunter(struct SystemData *sysdata) {
 ```
 
 
-#### g. Fitur Reset Stats Hunter
+#### 7. Fitur Reset Stats Hunter
 #### Soal :
 Admin bisa reset hunter:
 
@@ -269,7 +269,7 @@ void reset_hunter(struct SystemData *sysdata) {
 
 ```
 
-#### H. Notifikasi Dungeon (Dynamic)
+#### 8. Notifikasi Dungeon (Dynamic)
 #### Soal :
 Ada notifikasi dungeon yang update tiap 3 detik:
 Info: jumlah hunter, jumlah dungeon, top hunter.
@@ -301,7 +301,7 @@ void show_notification(struct SystemData *sysdata, struct Hunter *logged) {
 
 ```
 
-#### 8. Shared Memory Antar Hunter & Sistem
+#### 9. Shared Memory Antar Hunter & Sistem
 #### Soal :
 - Semua hunter pakai shared memory.
 - Semua memory harus terhapus saat sistem mati.
