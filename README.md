@@ -72,7 +72,8 @@ fprintf(f, "[%d/%m/%Y %H:%M:%S] [%s] Express package delivered to %s in %s\n",
 ```
 - Tulis kedalam log
   
-C. Pengiriman Bertipe Reguler
+C. Pengiriman Bertipe Reguler ( gunakan `./dispatcher -deliver <Nama>
+`)
 ```bash
 int fd = shm_open(SHM_NAME, O_RDWR, 0);
 mmap(...);
@@ -95,6 +96,39 @@ fprintf(f, "[%d/%m/%Y %H:%M:%S] [%s] Reguler package delivered to %s in %s\n",
 
 ```
 - Tulis kedalam log
+
+D. Mengecek Status Pesanan (gunakan `./dispatcher -status <Nama>
+`)
+
+```bash
+for (i=0; i<*num_orders; i++) {
+  if (strcmp(orders[i].name, target)==0) {
+    if (orders[i].delivered)
+      printf("Status for %s: Delivered by %s\n", target, orders[i].agent);
+    else
+      printf("Status for %s: Pending\n", target);
+    break;
+  }
+}
+if (!found) printf("Order '%s' not found.\n", target);
+
+```
+- Loop Check
+
+E. Melihat Daftar Semua Pesanan (gunakan `./dipatcher -list`)
+```bash
+printf("Daftar semua pesanan:\n");
+for (i=0; i<*num_orders; i++) {
+  const char *type = (orders[i].type=='E')?"Express":"Reguler";
+  if (orders[i].delivered)
+    printf("- %s (%s): Delivered by %s\n",
+           orders[i].name, type, orders[i].agent);
+  else
+    printf("- %s (%s): Pending\n",
+           orders[i].name, type);
+}
+
+```
 
 ## Soal_4 – Sung Jin Woo's Hunter System
 ### Deskripsi Singkat
