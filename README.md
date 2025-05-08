@@ -27,7 +27,61 @@
 ## 🗂️ Struktur Folder Final
 
 Berikut adalah struktur direktori setelah saya menyelesaikan tahap 1a:
+.
+├── client
+│ ├── 1744403652.jpeg
+│ ├── 1744403687.jpeg
+│ ├── image_client
+│ └── secrets
+│ ├── input_1.txt
+│ ├── input_2.txt
+│ ├── input_3.txt
+│ ├── input_4.txt
+│ └── input_5.txt
+├── image_client.c
+├── image_server.c
+└── server
+├── database
+│ ├── 1744403652.jpeg
+│ └── 1744403687.jpeg
+├── image_server
+└── server.log
 
+
+---
+
+## 🔧 Penjelasan Tiap Komponen
+
+### 📁 `client/`
+- `1744403652.jpeg`, `1744403687.jpeg`: Hasil output dari proses konversi text-to-jpeg.
+- `image_client`: File executable yang nantinya akan dijalankan oleh client untuk memanggil fungsi RPC ke server.
+- `secrets/`: Folder berisi lima file teks (`input_1.txt` hingga `input_5.txt`) yang berisi data rahasia untuk dikonversi.
+
+### 📄 `image_client.c`
+- Merupakan source code program client RPC. Belum dikompilasi atau dijelaskan di tahap ini.
+
+### 📄 `image_server.c`
+- Merupakan source code program server RPC. Sama seperti client, belum perlu dijalankan atau dijelaskan di soal nomor 1a.
+
+### 📁 `server/`
+- `image_server`: File hasil kompilasi dari `image_server.c`, yaitu server RPC yang nantinya akan menerima permintaan dari client.
+- `server.log`: Log file untuk mencatat aktivitas server.
+- `database/`: Folder yang menyimpan data JPEG untuk proses validasi atau pembandingan saat server menerima input dari client.
+
+---
+
+## 🧾 Catatan Pengerjaan
+
+- File teks (`input_1.txt`–`input_5.txt`) dan file gambar (`*.jpeg`) diperoleh dari link di soal dan dipindahkan manual ke lokasi masing-masing.
+- Semua nama file, ekstensi, dan penempatan folder **disamakan persis seperti contoh di soal** untuk menghindari error di tahap-tahap berikutnya.
+- Penamaan file `image_clnt.c` telah diperbaiki menjadi `image_client.c` agar konsisten dan mudah dipahami.
+
+---
+
+## 🏁 Status
+
+✅ Nomor 1a telah SELESAI.  
+▶️ Siap lanjut ke tahap pemrograman RPC di nomor berikutnya.
 
 
 
