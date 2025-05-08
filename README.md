@@ -30,7 +30,71 @@ Berikut ini adalah langkah-langkah yang saya lakukan untuk menyusun struktur dir
 
 ### 1. Masuk ke folder kerja
 Saya masuk dulu ke direktori tempat saya ingin menyusun proyek, contohnya:
+```bash 
+cd ~/Downloads/temp_secrets
+```
+### 2. Membuat folder sesuai struktur
+Saya membuat semua folder yang dibutuhkan menggunakan mkdir:
+```bash 
+mkdir -p client/secrets
+mkdir -p server/database
+```
+### 3. Menyalin/memindahkan file ke folder yang benar
+Setelah file teks dan gambar saya ekstrak atau download secara manual, saya pindahkan ke lokasi yang benar:
+Pindahkan input teks ke client/secrets:
+```bash 
+mv input_1.txt input_2.txt input_3.txt input_4.txt input_5.txt client/secrets/
+```
+Pindahkan file JPEG ke client/:
+```bash
+mv 1744403652.jpeg 1744403687.jpeg client/
+```
+Duplikat file JPEG ke server/database:
+```bash
+cp client/1744403652.jpeg client/1744403687.jpeg server/database/
+```
+### 4. Memastikan file .c ada di root direktori
+Jika sebelumnya nama file salah (contoh image_clnt.c), saya ubah:
+```bash
+mv image_clnt.c image_client.c
+```
 
+### 5. Menambahkan placeholder file (jika perlu)
+Jika saya belum compile file .c, saya bisa buat placeholder dulu:
+```bash
+touch client/image_client
+touch server/image_server
+touch server/server.log
+```
+
+### 6. Mengecek struktur dengan tree
+Terakhir, saya jalankan:
+```bash
+tree
+```
+
+Dan hasilnya sesuai dengan yang diinginkan:
+```bash
+.
+├── client
+│   ├── 1744403652.jpeg
+│   ├── 1744403687.jpeg
+│   ├── image_client
+│   └── secrets
+│       ├── input_1.txt
+│       ├── input_2.txt
+│       ├── input_3.txt
+│       ├── input_4.txt
+│       └── input_5.txt
+├── image_client.c
+├── image_server.c
+└── server
+    ├── database
+    │   ├── 1744403652.jpeg
+    │   └── 1744403687.jpeg
+    ├── image_server
+    └── server.log
+```
 
 
 ## Soal_2 
