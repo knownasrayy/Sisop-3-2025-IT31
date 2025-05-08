@@ -8,11 +8,7 @@
 
 ## Deskripsi Soal
 
-> **Tahun 2045**, dunia mengalami kehancuran infrastruktur siber. Sebagai mahasiswa Departemen Teknologi Informasi ITS, saya memiliki ide untuk kembali ke tahun 2025 untuk mencari hacker legendaris asal Semarang, yaitu **“rootkids”**.  
->
-> Petunjuk hanya ditemukan dari situs deep web berupa beberapa file teks aneh yang harus diubah menjadi file **JPEG** menggunakan sistem **RPC Client-Server**.  
->
-> Di nomor **1a**, saya diminta **menyusun struktur folder dan file** berdasarkan contoh yang ditampilkan di situs deep web.
+Pada soal ini saya diminta menyusun struktur folder dan file sesuai contoh dari situs deep web. Petunjuk yang diberikan berupa file teks yang harus diubah menjadi file jpeg menggunakan sistem RPC, namun di nomor 1a ini hanya fokus pada penyusunan struktur direktori dan file yang sesuai.
 
 ---
 
