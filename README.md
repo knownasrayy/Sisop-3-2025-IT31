@@ -28,7 +28,7 @@ Di hunter.c:
 -  Bisa battle dengan hunter lain yaitu hunters_battle
 -  Data hunter dan dungeon diakses bareng-bareng via shared memory sysdata
 
-#### a. Registrasi dan Login Hunter
+#### b. Registrasi dan Login Hunter
 #### Soal :
 - Hunter bisa register & login.
 - Saat register, hunter punya:
@@ -39,7 +39,83 @@ Di hunter.c:
 - HP = 100
 - DEF = 5
 - Key unik untuk shared memory.
-#### Implementasi :
-#### Di system.c:
+#### Implementasi Code :
+```bash
+ if (choice == 1) {
+            printf("Username: ");
+            fgets(username, sizeof(username), stdin);
+            username[strcspn(username, "\n")] = 0;
 
+            int exists = 0;
+            for (int i = 0; i < sysdata->num_hunters; i++) {
+                if (strcmp(sysdata->hunters[i].username, username) == 0) {
+                    exists = 1;
+                    break;
+                }
+            }
 
+            if (exists) {
+                printf("Username already registered.\n");
+                continue;
+            }
+
+            struct Hunter *h = &sysdata->hunters[sysdata->num_hunters++];
+            strcpy(h->username, username);
+            h->level = 1;
+            h->exp = 0;
+            h->atk = 10;
+            h->hp = 100;
+            h->def = 5;
+            h->banned = 0;
+            h->shm_key = ftok("/tmp", username[0]);
+
+            printf("Registration successful!\n");
+
+        } else if (choice == 2) {
+            printf("Username: ");
+            fgets(username, sizeof(username), stdin);
+            username[strcspn(username, "\n")] = 0;
+
+            int found = -1;
+            for (int i = 0; i < sysdata->num_hunters; i++) {
+                if (strcmp(sysdata->hunters[i].username, username) == 0) {
+                    found = i;
+                    break;
+                }
+            }
+
+            if (found == -1) {
+                printf("User not found.\n");
+                continue;
+            }
+
+            struct Hunter *logged = &sysdata->hunters[found];
+
+            if (logged->banned) {
+                printf("Your account is banned.\n");
+                continue;
+            }
+
+            printf("\nLogin successful! Welcome %s.\n", logged->username);
+
+```
+
+#### c. List Dungeon Sesuai Level Hunter
+#### Soal : Hunter hanya bisa melihat dungeon yang levelnya sesuai (minimal level terpenuhi).
+#### Implementasi Code :
+```bash
+void list_dungeons(struct SystemData *sysdata, struct Hunter *h) {
+    printf("\n== AVAILABLE DUNGEONS ==\n");
+    int count = 0;
+    for (int i = 0; i < sysdata->num_dungeons; i++) {
+        struct Dungeon d = sysdata->dungeons[i];
+        if (h->level >= d.min_level) {
+            printf("%d. %s\t(Level %d+)\n", ++count, d.name, d.min_level);
+        }
+    }
+
+    if (count == 0) {
+        printf("No dungeons available for your level.\n");
+    }
+
+```
