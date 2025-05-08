@@ -30,8 +30,7 @@ Berikut ini adalah langkah-langkah yang saya lakukan untuk menyusun struktur dir
 
 ### 1. Masuk ke folder kerja
 Saya masuk dulu ke direktori tempat saya ingin menyusun proyek, contohnya:
-```bash
-cd ~/Downloads/temp_secrets
+
 
 
 ## Soal_2 
