@@ -37,8 +37,40 @@ Saya masuk dulu ke direktori tempat saya ingin menyusun proyek, contohnya:
 ### Deskripsi_Singkat
 Sistem RushGo terdiri dari dua program berbasis shared memory untuk mengelola dan memroses pesanan:
 1. Delivery_agent.c
-- Membaca file delivery_order.csv (skip header bila ada)
-- Membuat/shared memory (/rushgo_shm) dan menyimpan semua order
+  - Membaca file delivery_order.csv
+  - Membuat/shared memory (/rushgo_shm) dan menyimpan semua order
+
+2. Dispatcher.c
+  - Mengakses shared memory yang sama
+  - Menyediakan antarmuka baris-perintah dengan opsi list, deliver, dan status
+
+### Penjelasan Kode
+A. Download file CSV
+```bash
+wget "https://drive.google.com/uc?export=download&id=1OJfRuLgsBnIBWtdRXbRsD2sG6NhMKOg9" -O delivery_order.csv
+
+```
+- Berfungsi untuk mendownload file csv dari google drive dan menamai nya delivery_order.csv
+
+B. Pengiriman Bertipe Express
+```bash
+pthread_t th[3];
+for (int i = 0; i < 3; i++) {
+  int *arg = malloc(sizeof(int));
+  *arg = i;
+  pthread_create(&th[i], NULL, agent_thread, arg);
+}
+```
+- Kunci mutex, cari orders[i].type == 'E' && delivered==0
+- Tandai delivered = 1, isi agent = "AGENT A/B/C" secara bergilir
+- Lepas mutex
+- Panggil log_delivery(agent, &orders[i])
+Tulis kedalam log
+```bash
+fprintf(f, "[%d/%m/%Y %H:%M:%S] [%s] Express package delivered to %s in %s\n",
+        buf, agent, o->name, o->address);
+
+```
 
 ## Soal_4 – Sung Jin Woo's Hunter System
 ### Deskripsi Singkat
